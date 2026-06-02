@@ -21,6 +21,8 @@ services:
         sync: false
       - key: AUTH_GOOGLE_SECRET
         sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
 
 databases:
   - name: tabidao-db

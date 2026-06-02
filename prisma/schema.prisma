@@ -17,7 +17,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
   sessions      Session[]
-  trips         Trip[]
+  itineraries   Itinerary[]
 }
 
 model Account {
@@ -54,7 +54,7 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Trip {
+model Itinerary {
   id          String    @id @default(cuid())
   title       String
   destination String?
@@ -64,4 +64,28 @@ model Trip {
   updatedAt   DateTime  @updatedAt
   userId      String
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  days        Day[]
+}
+
+model Day {
+  id          String    @id @default(cuid())
+  date        DateTime?
+  dayNumber   Int
+  itineraryId String
+  itinerary   Itinerary @relation(fields: [itineraryId], references: [id], onDelete: Cascade)
+  events      Event[]
+
+  @@unique([itineraryId, dayNumber])
+}
+
+model Event {
+  id          String  @id @default(cuid())
+  timeStart   String?
+  timeEnd     String?
+  description String
+  location    String?
+  latitude    Float?
+  longitude   Float?
+  dayId       String
+  day         Day     @relation(fields: [dayId], references: [id], onDelete: Cascade)
 }
